@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block 'head' %}
+{% endblock %}
+
+{% block 'body' %}
+    <div class='container'>
+        {% if messages %}
+            <br>
+            {% for message in messages  %}
+                <div class="alert {{ message.tags }}">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <form action="{% url 'cadastrar_vendedor' %}" method='POST'>{% csrf_token %}
+            <br>
+            <label>E-mail</label>
+            <input type="email" name="email" placeholder='Digite seu E-mail' class='form-control'>
+            <br>
+            <label>Senha</label>
+            <input type="password" name="senha" placeholder='Digite sua senha' class='form-control'>
+            <br>
+            <input type="submit" class="btn btn-success">
+
+        </form>
+        <hr class='bg-hr'>
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Sobrenome</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Último login</th>
+                <th scope="col">Excluir</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for vendedor in vendedores %}
+              <tr>
+                <td>{{ vendedor.first_name }}</td>    
+                <td>{{ vendedor.last_name }}</td>
+                <td>{{ vendedor.email }}</td>
+                {% if vendedor.cargo == 'V' %}
+                    <td>Vendedor</td>   
+                {% elif vendedor.cargo == 'G' %}    
+                    <td>Gerente</td>        
+                {% endif %}
+                <td>{{ vendedor.last_login}}</td>
+                <td><a class="btn btn-danger" href="{% url 'excluir_usuario' vendedor.id %}">Excluir</a></td>
+                {% endfor %}
+              </tr>     
+            </tbody>
+          </table>
+
+    </div>
+
+
+{% endblock %}
