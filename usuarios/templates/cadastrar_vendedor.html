@@ -15,6 +15,12 @@
         {% endif %}
         <form action="{% url 'cadastrar_vendedor' %}" method='POST'>{% csrf_token %}
             <br>
+            <label>Nome</label>
+            <input type="text" name="nome" placeholder='Digite seu Nome' class='form-control'>
+            <br>
+            <label>Sobrenome</label>
+            <input type="text" name="sobrenome" placeholder='Digite seu Sobrenome' class='form-control'>
+            <br>
             <label>E-mail</label>
             <input type="email" name="email" placeholder='Digite seu E-mail' class='form-control'>
             <br>
@@ -47,7 +53,11 @@
                 {% elif vendedor.cargo == 'G' %}    
                     <td>Gerente</td>        
                 {% endif %}
-                <td>{{ vendedor.last_login}}</td>
+                <td>{% if not vendedor.last_login %}
+                        Primeiro acesso
+                    {% else %}
+                        {{ vendedor.last_login}}</td>
+                    {% endif %}          
                 <td><a class="btn btn-danger" href="{% url 'excluir_usuario' vendedor.id %}">Excluir</a></td>
                 {% endfor %}
               </tr>     

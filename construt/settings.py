@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "usuarios",
     "rolepermissions",
+    "estoque",
 ]
 
 MIDDLEWARE = [
@@ -108,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "pt-br"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/Recife"
 
 USE_I18N = True
 
@@ -143,7 +144,7 @@ ROLEPERMISSIONS_MODULE = 'construt.roles'
 MESSAGE_TAGS = {
     constants.DEBUG: 'alert-primary',
     constants.ERROR: 'alert-danger',
-    constants.SUCESS: 'alert-success',
+    constants.SUCCESS: 'alert-success',
     constants.INFO: 'alert-info',
     constants.WARNING: 'alert-warning',
 }
