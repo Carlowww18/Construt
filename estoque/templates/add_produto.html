@@ -1,32 +1,96 @@
-<form action="{% url 'add_produto' %}" method='POST' enctype='multipart/form-data'>{% csrf_token %}
+{%extends 'base.html' %}
+{% load filters %}
 
-    <label>Imagens:</label>
-    <input type="file" name='imagens' multiple>
-    <br>
-    <br>       
-    <label>Nome:</label>
-    <input type="text" name='nome' >
-    <br>
-    <br>
-    <label>Selecione a categoria do produto:</label>
-    <select name="categoria">
-        {% for cat in categoria %}
-            <option value="{{ cat.id }}">{{ cat.titulo }}</option>       
+{% block 'body' %}
+<div class='container'>
+    <form action="{% url 'add_produto' %}" method='POST' enctype='multipart/form-data'>{% csrf_token %}
+        {% if messages %}
+        <br>
+        {% for message in messages  %}
+            <div class="alert {{ message.tags }}">
+                {{message}}
+            </div>
         {% endfor %}
-    </select>
+        {% endif %}
+        <br>
+        <label>Imagens:</label>
+        <input class='form-control' type="file" name='imagens' multiple>
+        <br>
+        <br>       
+        <label>Nome:</label>
+        <input class='form-control'  type="text" name='nome' >
+        <br>
+        <br>
+        <label>Selecione a categoria do produto:</label>
+        <select  name="categoria">
+            {% for cat in categoria %}
+                <option value="{{ cat.id }}">{{ cat.titulo }}</option>       
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label>Estoque inicial:</label>
+        <input class='form-control'  type="number" name='quantidade' >
+        <br>
+        <br>
+        <label>Preço de Compra:</label>
+        <input class='form-control'  type="number" name='preco_compra' >
+        <br>
+        <br>
+        <label>Preço de Venda:</label>
+        <input class='form-control'  type="number" name='preco_venda' >
+        <br>
+        <br>
+        <input class='btn btn-success' type="submit" value='Enviar'>
+    </form> 
+    <hr style='background-color: gray;'>  
+    <form action="{% url 'add_produto' %}" method='GET'>
+        <div class="row">
+            <div class="col-md">
+                <input class='form-control' type="text" name='nome' placeholder='Nome'>
+            </div>
+
+            <div class="col-md">
+                <select class='form-control' name="categoria">
+                    <option value="">Todas as Categorias    </option>
+                    {% for cat in categoria %}
+                        <option value="{{ cat.id }}">{{ cat.titulo }}</option>       
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md">
+                <input class='form-control' type="number" name='preco_min' placeholder='Preço Mínimo'>
+            </div>
+
+            <div class="col-md">
+                <input class='form-control' type="number" name='preco_max' placeholder='Preço Máximo'>
+            </div>
+
+            <div class="col-md">
+                <input type="submit" value='Filtrar' class='btn btn-success'>
+            </div>
+        </div>
+    </form>
     <br>
-    <br>
-    <label>Estoque inicial:</label>
-    <input type="number" name='quantidade' >
-    <br>
-    <br>
-    <label>Preço de Compra:</label>
-    <input type="number" name='preco_compra' >
-    <br>
-    <br>
-    <label>Preço de Venda:</label>
-    <input type="number" name='preco_venda' >
-    <br>
-    <br>
-    <input type="submit" value='Enviar'>
-</form> 
+    <div class='litar_produtos'>
+        <div class='row'>
+            {% for produto in produtos %}
+            <div class='col-md'>
+                <div style="background-color: black; width: 18rem;" class="card" style="width: 18rem;">
+                    {% if produto|get_first_image %}
+                        <img class="card-img-top" src="{{produto|get_first_image}}" alt="Card image cap">
+                    {% endif %}
+                    <div class="card-body">
+                    <h5 class="card-title">{{produto.nome}}</h5>
+                    <span class="badge badge-info">{{produto.categoria}}</span>
+                    <br><br>
+                    <a href="{% url 'produto' produto.slug %}" class="btn btn-primary">Acessar</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>  
+</div>
+{% endblock %}
